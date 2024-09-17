@@ -2,15 +2,16 @@
 // avo@hmc.edu
 // 9/12/2024
 // This code outputs the keypad values not bounced.
-	module debounce(input logic clk,
+module debounce(input logic clk,
 	input logic [7:0] keypad_val,
 	input logic button_on, en_ks,
 	output logic [7:0] no_bounce_keypad,
-	output logic real_en);
+	output logic [24:0] counter);
 
-	logic [24:0] counter = 0;
+	//logic [24:0] counter = 0;
 	//logic [24:0] en_counter = 0;
 	logic [24:0] encounter = 0;
+	logic real_en;
 	
 	// really complicated clock divider
 	always_ff @(posedge clk)

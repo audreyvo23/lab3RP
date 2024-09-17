@@ -6,7 +6,8 @@ module keypad_scanner (input logic clk, reset, C0, C1, C2, C3,
 		output logic [7:0] keypad_val,
 		output logic button_on,
 		output logic en,
-		output logic R0, R1, R2, R3
+		output logic R0, R1, R2, R3,
+		output logic [24:0] counter2
 		);
 	
 	//keypad_val = {R0, R1, R2, R3, C0, C1, C2, C3};
@@ -21,9 +22,13 @@ module keypad_scanner (input logic clk, reset, C0, C1, C2, C3,
 	enum int {S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11} state, nextstate;
 	
 
-	always_ff @(posedge clk)
+	always_ff @(posedge clk) begin
 		if (reset)  state <= S0;
 		else        state <= nextstate;
+			
+		if (button_on) counter2 <= counter2 +1;
+		else counter2 <= 0;
+	end
 	
 	always_comb
 		case (state)

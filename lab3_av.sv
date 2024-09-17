@@ -17,7 +17,7 @@ module lab3 (input logic inv_reset,
 	logic button_on;
 	logic [7:0] no_bounce_keypad;
 	logic C0, C1, C2, C3;
-	logic selector1, selector2;
+	//logic selector1, selector2;
 	logic pulse; // not included right now
 	logic [3:0] mux_s;
 	logic reset;
@@ -29,6 +29,7 @@ module lab3 (input logic inv_reset,
 	
 	logic new_clk = 1;
 	logic [24:0] counter = 0;
+	logic [24:0] counter2;
 	
 	// Simple clock divider
 	always_ff @(posedge int_osc)
@@ -52,16 +53,16 @@ module lab3 (input logic inv_reset,
 	synchronizer s3 (new_clk, reset, async_C0, async_C1, async_C2, async_C3, C0, C1, C2, C3);
 	
 	// FSM that scans the keypad
-	keypad_scanner s0 (new_clk, reset, async_C0, async_C1, async_C2, async_C3, keypad_val, button_on, en, R0, R1, R2, R3);
+	keypad_scanner s0 (new_clk, reset, async_C0, async_C1, async_C2, async_C3, keypad_val, button_on, en, R0, R1, R2, R3, counter2);
 	
 	// takes care of debouncing when button is clicked
-	debounce s5 (new_clk, keypad_val, button_on, no_bounce_keypad, real_en);
+	//debounce s5 (new_clk, keypad_val, button_on, no_bounce_keypad, counter);
 
 	// decodes the switch value from the rows and columns turned on
 	keypad_decoder s6 (keypad_val, s);
 
 	// stores the memory of the digits
-	two_digit_mem s4 (new_clk, reset, s, en, s1, s2);
+	two_digit_mem s4 (new_clk, reset, counter2, s, en, s1, s2);
 
 	// internal oscillator that outputs 2 selectors
 	selector_checker s7 (new_clk, selector1, selector2);
@@ -72,7 +73,7 @@ module lab3 (input logic inv_reset,
 	// seven Segment code from Lab 1
 	sevenSeg s9 (mux_s, sevenSeg);
 
-	assign button_on_debug = en;
+	assign button_on_debug = button_on;
 
 	
 
