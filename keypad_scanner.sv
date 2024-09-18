@@ -6,7 +6,7 @@ module keypad_scanner (input logic clk, reset, C0, C1, C2, C3,
 		output logic [7:0] keypad_val,
 		output logic button_on,
 		output logic en,
-		output logic R0, R1, R2, R3,
+		output logic row0, row1, row2, row3,
 		output logic [24:0] counter2
 		);
 	
@@ -67,6 +67,12 @@ module keypad_scanner (input logic clk, reset, C0, C1, C2, C3,
 		    else nextstate = S0;
 		default: nextstate = S0;
 		endcase
+		
+	// output logic
+	assign row0 = (state == S0) || (state == S10) || (state == S11) || (state == S4) || (state == S5) || (state == S6) || (state == S7) || (state == S8) || (state == S9);
+	assign row1 = (state == S4) || (state == S1) || (state == S5) || (state == S10) || (state == S11) || (state == S6) || (state == S7) || (state == S8) || (state == S9);
+	assign row2 = (state == S6) || (state == S2) || (state == S7) || (state == S4) || (state == S5) || (state == S10) || (state == S11) || (state == S8) || (state == S9);
+	assign row3 = (state == S9) || (state == S8) || (state == S3) || (state == S4) || (state == S5) || (state == S6) || (state == S7) || (state == S10) || (state == S11);
 
 	// output logic
 	assign R0 = (state == S0) || (state == S10) || (state == S11);

@@ -29,7 +29,7 @@ module lab3 (input logic inv_reset,
 	
 	logic new_clk = 1;
 	logic [24:0] counter = 0;
-	logic [24:0] counter2;
+	logic [24:0]  counter2;
 	
 	// Simple clock divider
 	always_ff @(posedge int_osc)
